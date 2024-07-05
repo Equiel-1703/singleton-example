@@ -31,6 +31,14 @@ public class Singleton {
 		this.player_2 = player;
 	}
 
+	public Player getPlayer1() {
+		return player_1;
+	}
+
+	public Player getPlayer2() {
+		return player_2;
+	}
+
 	public boolean isCollidingWithPlayer1(java.awt.Rectangle r) {
 		return player_1.getBounds().intersects(r);
 	}

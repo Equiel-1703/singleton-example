@@ -1,42 +1,23 @@
 package frames;
 
-import javax.swing.*;
 import shapes.Rectangle;
+
+import javax.swing.*;
 import java.awt.Dimension;
-import java.awt.event.KeyListener;
+import java.awt.Color;
 
 public class Player extends JFrame {
-	private final Dimension player_dimension = new Dimension(250, 600);
-	
-	public Player(String title) {
+	private final Dimension player_dimension = new Dimension(250, 500);
+	private final int speed = 10;
+
+	public Player(String title, Color c) {
 		setTitle(title);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		
-		Rectangle rect = new Rectangle(player_dimension);
+
+		Rectangle rect = new Rectangle(player_dimension, c);
 		getContentPane().add(rect);
-
-		addKeyListener(new KeyListener() {
-			@Override
-			public void keyTyped(java.awt.event.KeyEvent e) {
-				// Do nothing
-			}
-
-			@Override
-			public void keyPressed(java.awt.event.KeyEvent e) {
-				if (e.getKeyChar() == 'w') {
-					setLocation(getX(), getY() - 10);
-				} else if (e.getKeyChar() == 's') {
-					setLocation(getX(), getY() + 10);
-				}
-			}
-
-			@Override
-			public void keyReleased(java.awt.event.KeyEvent e) {
-				// Do nothing
-			}
-		});
 
 		pack();
 	}
@@ -44,5 +25,17 @@ public class Player extends JFrame {
 	public Dimension getPlayerDimension() {
 		return player_dimension;
 	}
-	
+
+	public void moveUp() {
+		SwingUtilities.invokeLater(() -> {
+			setLocation(getX(), getY() - speed);
+		});
+	}
+
+	public void moveDown() {
+		SwingUtilities.invokeLater(() -> {
+			setLocation(getX(), getY() + speed);
+		});
+	}
+
 }
