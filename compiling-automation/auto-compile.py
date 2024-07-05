@@ -2,6 +2,14 @@ import os
 import sys
 import subprocess
 
+class terminal_colors:
+	HEADER = '\033[95m'
+	OKBLUE = '\033[94m'
+	OKCYAN = '\033[96m'
+	OKGREEN = '\033[92m'
+	WARNING = '\033[93m'
+	FAIL = '\033[91m'
+	ENDC = '\033[0m'
 
 def posorder_traversal(folder, condition) -> list[str]:
 	"""
@@ -38,11 +46,11 @@ def posorder_traversal(folder, condition) -> list[str]:
 src_folder = input("Folder containing the source code: ").strip()
 src_folder = os.path.abspath(src_folder)
 
-print("Source folder (absolute path): " + src_folder)
+print(f"{terminal_colors.OKCYAN}Source folder (absolute path): {src_folder}{terminal_colors.ENDC}")
 
 # Check if the folder exists and is a directory
 if not os.path.exists(src_folder) or not os.path.isdir(src_folder):
-	print(f"Error> The folder \"{os.path.basename(src_folder)}\" does not exist based on the current location!", file=sys.stderr)
+	print(f"{terminal_colors.FAIL}Error> The folder \"{os.path.basename(src_folder)}\" does not exist based on the current location!{terminal_colors.ENDC}", file=sys.stderr)
 	exit(1)
 
 # Let's now define the condition function
@@ -65,12 +73,12 @@ for file in files_to_compile:
 	result = subprocess.run(command + [file], capture_output=True, text=True)
 
 	if result.returncode != 0:
-		print(f"Error> Could not compile the file \"{file}\"!", file=sys.stderr)
-		print("Compilation aborted.")
+		print(f"{terminal_colors.FAIL}Error> Could not compile the file \"{file}\"!", file=sys.stderr)
+		print(f"Compilation aborted.{terminal_colors.ENDC}")
 		print("\n" + result.stdout)
 
 		exit(1)
 
-print("\nCompilation finished!")
+print(f"\n{terminal_colors.OKGREEN}Compilation finished!{terminal_colors.ENDC}")
 print(f"Total of {len(files_to_compile)} files compiled.")
-print("Note: the Current Path provided to the Java compiler was the source folder path.")
+print(f"{terminal_colors.WARNING}Note: the Current Path provided to the Java compiler was the source folder path.{terminal_colors.ENDC}")
