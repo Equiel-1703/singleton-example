@@ -4,6 +4,7 @@ import shapes.Circle;
 import singleton.Singleton;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 
@@ -39,12 +40,9 @@ public class Ball extends JFrame implements Runnable {
 
 	private final Dimension ball_dimension = new Dimension(150, 150);
 	private final int speed = 20;
-	private Dimension screenSize;
 
-	public Ball(Dimension screenSize) {
+	public Ball() {
 		setTitle("Ball");
-
-		this.screenSize = screenSize;
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
@@ -66,29 +64,56 @@ public class Ball extends JFrame implements Runnable {
 		int direction_x = 1;
 		int direction_y = 1;
 
+		var singleton = Singleton.getInstance();
+		Dimension screen_size = Singleton.getScreenSize();
+
+		Player lastPlayerCollided = null;
+
 		while (true) {
-			if (getX() <= 0 || getX() >= screenSize.width - ball_dimension.width) {
+			if (getX() <= 0 || getX() >= screen_size.width - ball_dimension.width) {
 				direction_x *= -1;
 			}
 
-			if (getY() <= 0 || getY() >= screenSize.height - ball_dimension.height) {
+			if (getY() <= 0 || getY() >= screen_size.height - ball_dimension.height) {
 				direction_y *= -1;
 			}
 
 			int new_x = getX() + (direction_x * speed);
 			int new_y = getY() + (direction_y * speed);
 
-			var singleton = Singleton.getInstance();
 			java.awt.Rectangle ball_rect = new java.awt.Rectangle(new_x, new_y, ball_dimension.width,
 					ball_dimension.height);
 
-			if (singleton.isCollidingWithPlayer1(ball_rect) || singleton.isCollidingWithPlayer2(ball_rect)) {
+			if (singleton.isCollidingWithPlayersVertical(ball_rect) && lastPlayerCollided == null) {
+				direction_y *= -1;
+				new_y = getY() + (direction_y * speed);
+			} else if (singleton.isCollidingWithPlayersHorizontal(ball_rect) && lastPlayerCollided == null) {
 				direction_x *= -1;
+				new_x = getX() + (direction_x * speed);
 			}
+			lastPlayerCollided = singleton.getPlayerColliding(ball_rect);
+
+			Point new_ball_position = new Point(new_x, new_y);
 
 			SwingUtilities.invokeLater(() -> {
-				setLocation(new_x, new_y);
+				setLocation(new_ball_position.x, new_ball_position.y);
 			});
+
+			// Check if one of the players scored
+			Point center_screen_pos = new Point(screen_size.width / 2 - ball_dimension.width / 2,
+					screen_size.height / 2 - ball_dimension.height / 2);
+
+			if (getX() <= 0) {
+				singleton.getPlayer2().increaseScore();
+				SwingUtilities.invokeLater(() -> {
+					setLocation(center_screen_pos);
+				});
+			} else if (getX() >= screen_size.width - ball_dimension.width) {
+				singleton.getPlayer1().increaseScore();
+				SwingUtilities.invokeLater(() -> {
+					setLocation(center_screen_pos);
+				});
+			}
 
 			try {
 				Thread.sleep(20);

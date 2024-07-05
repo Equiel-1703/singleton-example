@@ -1,7 +1,5 @@
 package main;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.*;
@@ -22,7 +20,7 @@ public class Main {
 
 			Player player_1 = new Player("Player 1", Color.CYAN);
 			Player player_2 = new Player("Player 2", new Color(179, 33, 202));
-			Ball ball = new Ball(screenSize);
+			Ball ball = new Ball();
 
 			s.setPlayer1(player_1);
 			s.setPlayer2(player_2);
