@@ -43,6 +43,10 @@ def posorder_traversal(folder, condition) -> list[str]:
 	# Return the list of files
 	return list_of_files
 
+if os.name == "nt":
+	# If the OS is Windows, we must enable colors in the terminal
+	os.system("color")
+
 src_folder = input("Folder containing the source code: ").strip()
 src_folder = os.path.abspath(src_folder)
 
