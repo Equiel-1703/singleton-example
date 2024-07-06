@@ -7,10 +7,12 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
 public class Singleton {
-	private Player player_1;
-	private Player player_2;
-
+	private Player player1;
+	private Player player2;
+	
 	private static Singleton instance = null;
+	
+	public final int frameRateInterval = 20;
 
 	private Singleton() {
 	}
@@ -24,52 +26,52 @@ public class Singleton {
 	}
 
 	public void setPlayer1(Player player) {
-		this.player_1 = player;
+		this.player1 = player;
 	}
 
 	public void setPlayer2(Player player) {
-		this.player_2 = player;
+		this.player2 = player;
 	}
 
 	public Player getPlayer1() {
-		return player_1;
+		return player1;
 	}
 
 	public Player getPlayer2() {
-		return player_2;
+		return player2;
 	}
 
 	public boolean isCollidingWithPlayersVertical(java.awt.Rectangle r) {
-		java.awt.Rectangle p1 = player_1.getBounds();
-		java.awt.Rectangle p2 = player_2.getBounds();
+		java.awt.Rectangle p1 = player1.getBounds();
+		java.awt.Rectangle p2 = player2.getBounds();
 
-		boolean p1_collide = p1.intersects(r) && ((r.y > p1.y + p1.height) || (r.y + r.height < p1.y));
-		boolean p2_collide = p2.intersects(r) && ((r.y > p2.y + p2.height) || (r.y + r.height < p2.y));
+		boolean isP1Colliding = p1.intersects(r) && ((r.y > p1.y + p1.height) || (r.y + r.height < p1.y));
+		boolean isP2Colliding = p2.intersects(r) && ((r.y > p2.y + p2.height) || (r.y + r.height < p2.y));
 
-		return p1_collide || p2_collide;
+		return isP1Colliding || isP2Colliding;
 	}
 
 	public boolean isCollidingWithPlayersHorizontal(java.awt.Rectangle r) {
-		java.awt.Rectangle p1 = player_1.getBounds();
-		java.awt.Rectangle p2 = player_2.getBounds();
+		java.awt.Rectangle p1 = player1.getBounds();
+		java.awt.Rectangle p2 = player2.getBounds();
 
-		boolean p1_collide = p1.intersects(r);
-		boolean p2_collide = p2.intersects(r);
+		boolean isP1Colliding = p1.intersects(r);
+		boolean isP2Colliding = p2.intersects(r);
 
-		return p1_collide || p2_collide;
+		return isP1Colliding || isP2Colliding;
 	}
 
 	public Player getPlayerColliding(java.awt.Rectangle r) {
-		java.awt.Rectangle p1 = player_1.getBounds();
-		java.awt.Rectangle p2 = player_2.getBounds();
+		java.awt.Rectangle p1 = player1.getBounds();
+		java.awt.Rectangle p2 = player2.getBounds();
 
-		boolean p1_collide = p1.intersects(r);
-		boolean p2_collide = p2.intersects(r);
+		boolean isP1Colliding = p1.intersects(r);
+		boolean isP2Colliding = p2.intersects(r);
 
-		if (p1_collide) {
-			return player_1;
-		} else if (p2_collide) {
-			return player_2;
+		if (isP1Colliding) {
+			return player1;
+		} else if (isP2Colliding) {
+			return player2;
 		}
 
 		return null;
