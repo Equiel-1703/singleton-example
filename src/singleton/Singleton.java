@@ -85,8 +85,6 @@ public class Singleton {
 		GraphicsDevice d = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()[0];
 		java.awt.Rectangle r = d.getDefaultConfiguration().getBounds();
 
-		System.out.println("Screen size: " + r.width + "x" + r.height);
-
 		return new Dimension(r.width, r.height);
 	}
 }
