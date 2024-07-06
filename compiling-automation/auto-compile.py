@@ -47,9 +47,20 @@ if os.name == "nt":
 	# If the OS is Windows, we must enable colors in the terminal
 	os.system("color")
 
-src_folder = input("Folder containing the source code: ").strip()
-src_folder = os.path.abspath(src_folder)
+if len(sys.argv) > 2:
+	# The user provided more than one argument
+	print(f"{terminal_colors.FAIL}Error> Too many arguments provided!{terminal_colors.ENDC}", file=sys.stderr)
+	print(f"Usage: python {sys.argv[0]} [source_folder]", file=sys.stderr)
+	exit(1)
 
+if len(sys.argv) == 1:
+	src_folder = input("Folder containing the source code: ").strip()
+else:
+	# If the user provided a folder as an argument, we will use it as the source folder
+	src_folder = sys.argv[1]
+
+# Get the absolute path of the source folder
+src_folder = os.path.abspath(src_folder)
 print(f"{terminal_colors.OKCYAN}Source folder (absolute path): {src_folder}{terminal_colors.ENDC}")
 
 # Check if the folder exists and is a directory
